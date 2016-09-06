@@ -14,8 +14,7 @@ class ASDFocusAPI:
 		}
 		r = self.SESSION.post(self.BASE_URL, data=data)
 		response = json.loads(r.text)
-		import pdb; pdb.set_trace()  # breakpoint 49ea3914 //
-
+		print response
 
 	def session(self):
 		return self.SESSION
@@ -27,12 +26,11 @@ class ASDFocusAPI:
 			'Content-Type': 'application/x-www-form-urlencoded',
 		}
 		data = 'accessID=167&api=finalGrades&method=requestGrades&modname=Grades%2FStudentRCGrades.php&arguments%5B%5D=-1&arguments%5B1%5D%5B**FIRST-REQUEST**%5D=true&arguments%5B2%5D=null&signature=d400df66f3ce479081b5a534ff42a4990b4d56c7'
-		# url = '{}{}'.format(self.BASE_URL, self.API_URL)
-		url = 'https://focus.asdnh.org/focus/API/APIEndpoint.php'
+		url = '{}{}'.format(self.BASE_URL, self.API_URL)
 
-		response = requests.post('https://focus.asdnh.org/focus/API/APIEndpoint.php', cookies=cookies, data=data, headers=headers)
-		print response.text
-		return None
+		response = requests.post(url, cookies=cookies, data=data, headers=headers)
+		response = json.loads(response.content)
+		return response['result']['grades']
 
 	def get_schedule(self):
 		url = self.BASE_URL + 'Modules.php?modname=Scheduling/Schedule.php'
@@ -61,8 +59,13 @@ class ASDFocusAPI:
 
 		return classes
 
+	def get_ap_standard():
+		pass
 
 # Testing
 
-api = ASDFocusAPI('<username>', '<password>')
-print api.retrieve_course_history()
+api = ASDFocusAPI('', '')
+grades = api.retrieve_course_history()
+
+for key in grades.keys():
+	print "{} -- {}, {}".format(grades[key]['course_title'], grades[key]['percent_grade'], grades[key]['gpa_points'])
