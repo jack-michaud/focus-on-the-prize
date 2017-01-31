@@ -63,9 +63,9 @@ class ASDFocusAPI:
 		pass
 
 # Testing
+if __name__ == '__main__':
+	api = ASDFocusAPI('', '')
+	grades = api.retrieve_course_history()
 
-api = ASDFocusAPI('', '')
-grades = api.retrieve_course_history()
-
-for key in grades.keys():
-	print "{} -- {}, {}".format(grades[key]['course_title'], grades[key]['percent_grade'], grades[key]['gpa_points'])
+	for key in grades.keys():
+		print "{} -- {}, {}".format(grades[key]['course_title'], grades[key]['percent_grade'], grades[key]['gpa_points'])
