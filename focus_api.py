@@ -15,7 +15,7 @@ class ASDFocusAPI:
 		r = self.SESSION.post(self.BASE_URL, data=data)
 		response = json.loads(r.text)
 		print response
-
+	
 	def session(self):
 		return self.SESSION
 
@@ -26,8 +26,10 @@ class ASDFocusAPI:
 			'Content-Type': 'application/x-www-form-urlencoded',
 		}
 		data = 'accessID=167&api=finalGrades&method=requestGrades&modname=Grades%2FStudentRCGrades.php&arguments%5B%5D=-1&arguments%5B1%5D%5B**FIRST-REQUEST**%5D=true&arguments%5B2%5D=null&signature=d400df66f3ce479081b5a534ff42a4990b4d56c7'
+		
+		url = self.BASE_URL + 'Modules.php?force_package=SIS&modname=Grades/StudentRCGrades.php'
+		response = requests.get(url, cookies=cookies)
 		url = '{}{}'.format(self.BASE_URL, self.API_URL)
-
 		response = requests.post(url, cookies=cookies, data=data, headers=headers)
 		response = json.loads(response.content)
 		return response['result']['grades']
